@@ -37,8 +37,6 @@ func NewDatabase() (*sql.DB, error) {
 		config.DatabaseName,
 	)
 
-	fmt.Println(connStr)
-
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatalf("Erro ao conectar ao PostgreSQL: %v", err)

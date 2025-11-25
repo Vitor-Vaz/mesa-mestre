@@ -21,10 +21,9 @@ func main() {
 		return
 	}
 
-	db, err := extension.NewDatabase()
+	_, err := extension.NewDatabase()
 	if err != nil {
 		fmt.Printf("Erro ao conectar ao banco de dados: %v\n", err)
 		return
 	}
-	defer db.Close()
 }

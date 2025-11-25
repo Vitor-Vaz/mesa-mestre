@@ -1,4 +1,4 @@
-package extension
+package database
 
 import (
 	"database/sql"
@@ -39,16 +39,16 @@ func NewDatabase() (*sql.DB, error) {
 
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatalf("Erro ao conectar ao PostgreSQL: %v", err)
+		log.Fatalf("Error when connecting to PostgreSQL: %v", err)
 		return nil, err
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("Erro ao testar conexão com PostgreSQL: %v", err)
+		log.Fatalf("Error when pinging PostgreSQL: %v", err)
 		return nil, err
 	}
 
-	log.Println("✅ Conectado ao PostgreSQL com sucesso!")
+	log.Println("✅ Connected to PostgreSQL successfully")
 	return db, nil
 }

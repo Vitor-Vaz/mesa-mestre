@@ -1,35 +1,35 @@
 run:
-	go run ./api/main.go
+	go run ./app/main.go
 
 .PHONY: run
 
 .PHONY: install-linters
 install-linters:
-	@echo "📦 Instalando todas as dependências..."
+	@echo "📦 Installing all dependencies..."
 	@go install golang.org/x/tools/cmd/goimports@latest
 	@go install golang.org/x/lint/golint@latest
 	@go install github.com/kisielk/errcheck@latest
 	@go install honnef.co/go/tools/cmd/staticcheck@latest
 	@go install github.com/securego/gosec/v2/cmd/gosec@latest
 	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-	@echo "✅ Todas as dependências instaladas!"
+	@echo "✅ All dependencies installed!"
 
 .PHONY: lint
-lint: ## Executa todas as verificações de lint
-	@echo "🎨 Formatando código..."
+lint: ## Execute linters and formatters
+	@echo "🎨 Formatting code..."
 	@goimports -w .
 	@gofmt -w -s .
-	@echo "⚠️  Verificando erros não tratados..."
+	@echo "⚠️  Checking for unchecked errors..."
 	@errcheck ./...
-	@echo "🔒 Executando gosec..."
+	@echo "🔒 Running gosec..."
 	@gosec ./...
-	@echo "🔍 Executando golangci-lint..."
+	@echo "🔍 Running golangci-lint..."
 	@golangci-lint run ./...
-	@echo "🔧 Corrigindo problemas de lint..."
+	@echo "🔧 Fixing lint issues..."
 	@golangci-lint run --fix ./...
-	@echo "🔍 Executando go vet..."
+	@echo "🔍 Running go vet..."
 	@go vet ./...
-	@echo "🔍 Executando staticcheck..."
+	@echo "🔍 Running staticcheck..."
 	@staticcheck ./...
 
 

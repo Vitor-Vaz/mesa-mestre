@@ -1,3 +1,5 @@
+DATABASE_URL=postgres://myuser:mypassword@localhost:5432/mesa-mestre?sslmode=disable
+
 run:
 	go run ./app/main.go
 
@@ -32,5 +34,11 @@ lint: ## Execute linters and formatters
 	@echo "🔍 Running staticcheck..."
 	@staticcheck ./...
 
+.PHONY: migrate-create
+migrate-create:
+	@read -p "Nome da migração: " name; \
+	migrate create -ext sql -dir extension/database/priv/migrations -seq $${name}
 
-
+.PHONY: migrate-up
+migrate-up:
+	@migrate -path extension/database/priv/migrations -database "$(DATABASE_URL)" up

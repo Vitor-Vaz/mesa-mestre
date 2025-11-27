@@ -17,7 +17,7 @@ install-linters:
 	@echo "✅ All dependencies installed!"
 
 .PHONY: lint
-lint: ## Execute linters and formatters
+lint:
 	@echo "🎨 Formatting code..."
 	@goimports -w .
 	@gofmt -w -s .
@@ -33,6 +33,10 @@ lint: ## Execute linters and formatters
 	@go vet ./...
 	@echo "🔍 Running staticcheck..."
 	@staticcheck ./...
+
+.PHONY: sqlc-gen
+sqlc-gen:
+	@sqlc ./gateway/postgres generate
 
 .PHONY: migrate-create
 migrate-create:

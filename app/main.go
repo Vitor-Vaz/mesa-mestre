@@ -7,6 +7,7 @@ import (
 	"mesa-mestre/extension/database"
 	"mesa-mestre/extension/telemetryfs"
 	"net/http"
+	"time"
 
 	"github.com/caarlos0/env/v10"
 	"github.com/go-chi/chi"
@@ -47,11 +48,18 @@ func main() {
 	// Register routes
 	v1.RegisterRoutes(r)
 
-	// Start the server
-	err = http.ListenAndServeTLS(":8080", "cert.pem", "key.pem", r)
-	if err != nil {
-		telemetryfs.Error(ctx, "Failed to start server: %s", zap.String(err.Error(), "error"))
+	server := &http.Server{
+		Addr:         ":8080",
+		Handler:      r,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
 
+	// Start the server
+	err = server.ListenAndServeTLS("cert.pem", "key.pem")
+	if err != nil && err != http.ErrServerClosed {
+		telemetryfs.Error(ctx, "Failed to start server: %s", zap.String(err.Error(), "error"))
 	}
 
 }

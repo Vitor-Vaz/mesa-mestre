@@ -16,7 +16,6 @@ func TestCreateOwner(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to connect to database: %v", err)
 	}
-	defer db.Close()
 
 	repo := repositories.NewOwnersRepository(db)
 

@@ -50,3 +50,7 @@ migrate-up:
 .PHONY: migrate-down
 migrate-down:
 	@migrate -path extension/database/priv/migrations -database "$(DATABASE_URL)" down	
+
+.PHONY: migrate-drop
+migrate-drop:
+	@migrate -path extension/database/priv/migrations -database "$(DATABASE_URL)" drop

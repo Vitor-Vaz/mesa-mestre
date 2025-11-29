@@ -7,7 +7,6 @@ package pggen
 
 import (
 	"context"
-	"database/sql"
 )
 
 const insertOwner = `-- name: InsertOwner :exec
@@ -16,8 +15,8 @@ VALUES ($1, $2)
 `
 
 type InsertOwnerParams struct {
-	Name  sql.NullString `json:"name"`
-	Email sql.NullString `json:"email"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 func (q *Queries) InsertOwner(ctx context.Context, arg InsertOwnerParams) error {

@@ -6,11 +6,13 @@ package pggen
 
 import (
 	"database/sql"
+
+	"github.com/google/uuid"
 )
 
 type Owner struct {
-	ID        int32          `json:"id"`
-	Name      sql.NullString `json:"name"`
-	Email     sql.NullString `json:"email"`
-	CreatedAt sql.NullTime   `json:"created_at"`
+	ID        uuid.UUID    `json:"id"`
+	Name      string       `json:"name"`
+	Email     string       `json:"email"`
+	CreatedAt sql.NullTime `json:"created_at"`
 }

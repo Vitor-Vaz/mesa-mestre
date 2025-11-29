@@ -3,10 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	v1 "mesa-mestre/app/v1"
 	"mesa-mestre/extension/database"
 	"mesa-mestre/extension/telemetryfs"
+	"net/http"
 
 	"github.com/caarlos0/env/v10"
+	"github.com/go-chi/chi"
 	"github.com/joho/godotenv"
 )
 
@@ -37,4 +40,13 @@ func main() {
 		fmt.Printf("Erro ao conectar ao banco de dados: %v\n", err)
 		return
 	}
+
+	r := chi.NewRouter()
+
+	// Register routes
+	v1.RegisterRoutes(r)
+
+	// Start the server
+	http.ListenAndServe(":8080", r)
+
 }

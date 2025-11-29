@@ -9,7 +9,9 @@ require (
 	go.uber.org/zap v1.27.1
 )
 
+require github.com/gofrs/uuid v4.4.0+incompatible
+
 require (
 	github.com/go-chi/chi v1.5.5
-	go.uber.org/multierr v1.10.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
 )

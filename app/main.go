@@ -11,6 +11,7 @@ import (
 	"github.com/caarlos0/env/v10"
 	"github.com/go-chi/chi"
 	"github.com/joho/godotenv"
+	"go.uber.org/zap"
 )
 
 type Config struct {
@@ -47,6 +48,10 @@ func main() {
 	v1.RegisterRoutes(r)
 
 	// Start the server
-	http.ListenAndServe(":8080", r)
+	err = http.ListenAndServeTLS(":8080", "cert.pem", "key.pem", r)
+	if err != nil {
+		telemetryfs.Error(ctx, "Failed to start server: %s", zap.String(err.Error(), "error"))
+
+	}
 
 }

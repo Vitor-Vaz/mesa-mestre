@@ -31,7 +31,6 @@ func (r *OwnersRepository) CreateOwner(ctx context.Context, name string, email s
 	})
 
 	var pgErr *pq.Error
-
 	if errors.As(err, &pgErr) && pgErr.Code == "23505" {
 		return domain.ErrConflict
 	}

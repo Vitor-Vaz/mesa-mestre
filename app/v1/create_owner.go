@@ -21,6 +21,7 @@ type CreateOwnerRequest struct {
 type CreateOwnerResponse struct {
 }
 
+//go:generate moq -out ./mocks/owner_creator_mock.go -pkg mocks . OnwerCreator
 type OnwerCreator interface {
 	CreateOwner(ctx context.Context, name string, email string) error
 }

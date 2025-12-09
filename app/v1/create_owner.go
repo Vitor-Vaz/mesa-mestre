@@ -2,7 +2,8 @@ package v1
 
 import (
 	"context"
-	"fmt"
+	"errors"
+	"mesa-mestre/domain"
 	"net/http"
 
 	"github.com/danielgtaylor/huma/v2"
@@ -34,10 +35,15 @@ func NewOwnerHandler(ownerCreator OnwerCreator) *OwnerHandler {
 	}
 }
 
-func (h *OwnerHandler) CreateOwnerHandler(ctx context.Context, req *CreateOwnerRequest) (*CreateOwnerResponse, error) {
-	// Handler logic to create an owner
+func (o *OwnerHandler) CreateOwnerHandler(ctx context.Context, req *CreateOwnerRequest) (*CreateOwnerResponse, error) {
 
-	fmt.Println("to criando um dono")
+	err := o.ownerCreator.CreateOwner(ctx, req.Body.Name, req.Body.Email)
+	switch {
+	case errors.Is(err, domain.ErrConflict):
+		return nil, huma.Error409Conflict("Owner already exists")
+	case err != nil:
+		return nil, huma.Error500InternalServerError("Internal server error")
+	}
 
 	return &CreateOwnerResponse{}, nil
 }
@@ -49,5 +55,16 @@ func CreateOwnerOperation() huma.Operation {
 		Path:        "/owners",
 		Summary:     "Create a new owner",
 		Tags:        []string{"Owners"},
+		Responses: map[string]*huma.Response{
+			"204": {
+				Description: "Owner created successfully",
+			},
+			"409": {
+				Description: "Owner already exists",
+			},
+			"500": {
+				Description: "Internal server error",
+			},
+		},
 	}
 }

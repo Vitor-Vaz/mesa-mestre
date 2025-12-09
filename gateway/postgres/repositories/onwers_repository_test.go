@@ -39,10 +39,9 @@ func TestCreateOwner(t *testing.T) {
 	})
 
 	t.Run("should fail when return an unexpected error", func(t *testing.T) {
-		_, err := db.Exec(`DROP TABLE IF EXISTS owners CASCADE;`)
-		assert.NoError(t, err)
+		_, _ = db.Exec(`DROP TABLE IF EXISTS owners CASCADE;`)
 
-		err = repo.CreateOwner(context.Background(), "Name", email)
+		err := repo.CreateOwner(context.Background(), "Name", email)
 
 		assert.ErrorIs(t, err, domain.ErrUnexpected)
 	})

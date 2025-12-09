@@ -2,7 +2,6 @@ package repositories_test
 
 import (
 	"context"
-	"errors"
 	"mesa-mestre/domain"
 	"mesa-mestre/gateway/postgres/repositories"
 	"testing"
@@ -44,8 +43,7 @@ func TestCreateOwner(t *testing.T) {
 
 		err := repo.CreateOwner(context.Background(), "Name", email)
 
-		assert.True(t, errors.Is(err, domain.ErrUnexpected))
-
+		assert.ErrorIs(t, err, domain.ErrUnexpected)
 	})
 
 }

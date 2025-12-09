@@ -50,5 +50,6 @@ func NewDatabase() (*sql.DB, error) {
 	}
 
 	log.Println("✅ Connected to PostgreSQL successfully")
+
 	return db, nil
 }

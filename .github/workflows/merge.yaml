@@ -10,18 +10,59 @@ jobs:
   lint:
     name: Run Linters
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.25'
+      - name: Install linters
+        run: make install-linters
+      - name: Run lint
+        run: make lint
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.25'
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_DB: mesa-mestre
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-    - name: Install linters
-      run: make install-linters
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Run lint
-      run: make lint
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.25'
+          cache: true
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Install golang-migrate
+        run: |
+          curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+          sudo mv migrate.linux-amd64 /usr/bin/migrate
+
+      - name: Execute migrations
+        run: make migrate-up
+        env:
+          DB_URL: postgres://myuser:mypassword@localhost:5432/mesa-mestre?sslmode=disable
+
+      - name: Execute tests
+        run: go test -v ./...

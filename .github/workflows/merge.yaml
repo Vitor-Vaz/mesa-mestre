@@ -30,8 +30,8 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: myuser
-          POSTGRES_PASSWORD: mypassword
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: mesa_mestre
         ports:
           - 5432:5432
@@ -62,7 +62,7 @@ jobs:
       - name: Execute migrations
         run: make migrate-up
         env:
-          DB_URL: postgres://myuser:mypassword@localhost:5432/mesa_mestre?sslmode=disable
+          DB_URL: postgres://postgres:postgres@localhost:5432/mesa_mestre?sslmode=disable
 
       - name: Execute tests
         run: go test -v ./...

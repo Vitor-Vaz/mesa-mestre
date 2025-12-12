@@ -1,4 +1,4 @@
-DATABASE_URL=postgres://myuser:mypassword@localhost:5432/mesa-mestre?sslmode=disable
+DATABASE_URL=postgres://myuser:mypassword@localhost:5432/mesa_mestre?sslmode=disable
 
 run:
 	go run ./app/main.go

@@ -6,7 +6,7 @@ import (
 )
 
 func SetupTestDB(t *testing.T) *sql.Tx {
-	db, err := sql.Open("postgres", "postgres://myuser:mypassword@localhost:5432/mesa-mestre?sslmode=disable")
+	db, err := sql.Open("postgres", "postgres://myuser:mypassword@localhost:5432/mesa_mestre?sslmode=disable")
 	if err != nil {
 		t.Fatalf("failed to connect to database: %v", err)
 	}

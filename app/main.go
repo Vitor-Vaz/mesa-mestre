@@ -17,6 +17,8 @@ import (
 type Config struct {
 }
 
+const localAddress = ":8080"
+
 func main() {
 	logger, err := telemetryfs.NewLogger()
 	if err != nil {
@@ -56,7 +58,7 @@ func main() {
 	routes := v1.RegisterRoutes(HandlerProvider)
 
 	server := &http.Server{
-		Addr:         ":8080",
+		Addr:         localAddress,
 		Handler:      routes.C,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,

@@ -11,8 +11,8 @@ import (
 	"testing"
 
 	v1 "mesa-mestre/app/v1"
-	"mesa-mestre/extension/chi"
-	"mesa-mestre/extension/huma"
+
+	"mesa-mestre/extension/testhelpers"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -43,19 +43,12 @@ func TestCreateOwnerHandler(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			// router + huma
-			r := chi.NewRouter()
-			cfg := huma.NewConfig("Mesa Mestre API", "1.0.0")
-			cfg.Transformers = nil
-			api := huma.NewAPI(r.C, cfg)
-
-			// mock
 			ownerCreator := setupOwnerCreatorMock(tt.mockError)
 
 			// register handler
 			handler := v1.NewOwnerHandler(ownerCreator)
 
-			huma.Post(api, "/api/v1/owners", handler.CreateOwnerHandler)
+			r := testhelpers.CreatePostApiRouter("/api/v1/owners", handler.CreateOwnerHandler)
 
 			// test server
 			server := httptest.NewServer(r.C)

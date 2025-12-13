@@ -6,7 +6,7 @@ import (
 	"mesa-mestre/gateway/postgres/repositories"
 	"testing"
 
-	testehelpers "mesa-mestre/extension/testhelpers"
+	"mesa-mestre/extension/testhelpers"
 
 	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/assert"
@@ -14,7 +14,7 @@ import (
 
 func TestCreateOwner(t *testing.T) {
 
-	db := testehelpers.SetupTestDB(t)
+	db := testhelpers.SetupTestDB(t)
 	repo := repositories.NewOwnersRepository(db)
 
 	name := "Michael Scott"

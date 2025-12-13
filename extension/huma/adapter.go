@@ -34,7 +34,7 @@ func Register[I any, O any](api huma.API, op Operation, handler func(ctx context
 	}, handler)
 }
 
-// use ins tests
+// Post is a helper function to register POST handlers. It was created help setup and endpoint in test environments.
 func Post[I any, O any](api huma.API, path string, handler func(ctx context.Context, input *I) (*O, error)) {
 	huma.Post(api, path, handler)
 }

@@ -6,7 +6,6 @@ import (
 	"log"
 
 	"github.com/caarlos0/env/v10"
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -19,9 +18,6 @@ type Config struct {
 }
 
 func NewDatabase() (*sql.DB, error) {
-
-	_ = godotenv.Load()
-
 	var config Config
 	if err := env.Parse(&config); err != nil {
 		fmt.Printf("%+v\n", err)

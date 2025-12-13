@@ -12,9 +12,8 @@ import (
 
 	v1 "mesa-mestre/app/v1"
 
-	"github.com/danielgtaylor/huma/v2"
-	"github.com/danielgtaylor/huma/v2/adapters/humachi"
-	"github.com/go-chi/chi/v5"
+	"mesa-mestre/extension/testhelpers"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -44,21 +43,15 @@ func TestCreateOwnerHandler(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			// router + huma
-			r := chi.NewRouter()
-			cfg := huma.DefaultConfig("Mesa Mestre API", "1.0.0")
-			cfg.Transformers = nil
-			api := humachi.New(r, cfg)
-
-			// mock
 			ownerCreator := setupOwnerCreatorMock(tt.mockError)
 
 			// register handler
 			handler := v1.NewOwnerHandler(ownerCreator)
-			huma.Post(api, "/api/v1/owners", handler.CreateOwnerHandler)
+
+			r := testhelpers.CreatePostApiRouter("/api/v1/owners", handler.CreateOwnerHandler)
 
 			// test server
-			server := httptest.NewServer(r)
+			server := httptest.NewServer(r.C)
 			defer server.Close()
 
 			// request body

@@ -58,7 +58,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:         ":8080",
-		Handler:      routes,
+		Handler:      routes.C,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  60 * time.Second,

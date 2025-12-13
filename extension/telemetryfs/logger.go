@@ -49,10 +49,10 @@ func LoggerFromContext(ctx context.Context) *zap.Logger {
 	return logger
 }
 
-func Info(ctx context.Context, msg string, fields ...zap.Field) {
-	LoggerFromContext(ctx).Info(msg, fields...)
+func Info(ctx context.Context, msg string) {
+	LoggerFromContext(ctx).Info(msg)
 }
 
-func Error(ctx context.Context, msg string, fields ...zap.Field) {
-	LoggerFromContext(ctx).Error(msg, fields...)
+func Error(ctx context.Context, msg string) {
+	LoggerFromContext(ctx).Error(msg)
 }

@@ -11,11 +11,12 @@ import (
 	"time"
 
 	"github.com/caarlos0/env/v10"
-	"go.uber.org/zap"
 )
 
 type Config struct {
 }
+
+const localAddress = ":8080"
 
 func main() {
 	logger, err := telemetryfs.NewLogger()
@@ -54,7 +55,7 @@ func main() {
 	routes := v1.RegisterRoutes(HandlerProvider)
 
 	server := &http.Server{
-		Addr:         ":8080",
+		Addr:         localAddress,
 		Handler:      routes.C,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
@@ -64,6 +65,6 @@ func main() {
 	// Start the server
 	err = server.ListenAndServeTLS("cert.pem", "key.pem")
 	if err != nil && err != http.ErrServerClosed {
-		telemetryfs.Error(ctx, "Failed to start server: %s", zap.String(err.Error(), "error"))
+		telemetryfs.Error(ctx, fmt.Sprintf("Failed to start server: %s", err.Error()))
 	}
 }

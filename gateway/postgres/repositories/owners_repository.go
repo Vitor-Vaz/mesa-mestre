@@ -9,7 +9,6 @@ import (
 	"mesa-mestre/extension/telemetryfs"
 
 	"github.com/lib/pq"
-	"go.uber.org/zap"
 )
 
 type OwnersRepository struct {
@@ -36,7 +35,7 @@ func (r *OwnersRepository) CreateOwner(ctx context.Context, name string, email s
 	}
 
 	if err != nil {
-		telemetryfs.Error(ctx, "failed to create owner due to unexpected error", zap.Error(err))
+		telemetryfs.Error(ctx, "failed to create owner due to unexpected error")
 		return errors.Join(domain.ErrUnexpected, err)
 	}
 

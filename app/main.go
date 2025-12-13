@@ -69,5 +69,4 @@ func main() {
 	if err != nil && err != http.ErrServerClosed {
 		telemetryfs.Error(ctx, "Failed to start server: %s", zap.String(err.Error(), "error"))
 	}
-	// test
 }

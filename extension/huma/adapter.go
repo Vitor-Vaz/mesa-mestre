@@ -17,6 +17,7 @@ type Operation struct {
 }
 
 func NewConfig(appName, appVersion string) huma.Config {
+
 	cfg := huma.Config{
 		OpenAPI: &huma.OpenAPI{
 			OpenAPI: "3.1.0",
@@ -28,8 +29,8 @@ func NewConfig(appName, appVersion string) huma.Config {
 				Schemas: huma.NewMapRegistry("#/components/schemas/", huma.DefaultSchemaNamer),
 			},
 		},
-		OpenAPIPath:   "/openapi",
-		DocsPath:      "/docs",
+		OpenAPIPath:   "/api/v1/openapi",
+		DocsPath:      "/api/v1/docs",
 		SchemasPath:   "/schemas",
 		Formats:       huma.DefaultFormats,
 		DefaultFormat: "application/json",

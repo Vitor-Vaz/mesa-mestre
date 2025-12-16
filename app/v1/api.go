@@ -8,6 +8,8 @@ import (
 	"mesa-mestre/extension/huma"
 )
 
+const APIPrefix = "/api/v1"
+
 type HandlerProvider struct {
 	CreateOwnerHandler func(ctx context.Context, req *CreateOwnerRequest) (*CreateOwnerResponse, error)
 }
@@ -23,7 +25,7 @@ func RegisterRoutes(provider HandlerProvider) chi.Router {
 	huma.Register(api, huma.Operation{
 		OperationID: "create-owner",
 		Method:      http.MethodPost,
-		Path:        "/owners",
+		Path:        APIPrefix + "/owners",
 		Summary:     "Create a new owner",
 		Tags:        []string{"Owners"},
 	}, provider.CreateOwnerHandler)

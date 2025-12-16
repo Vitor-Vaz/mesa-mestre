@@ -4,14 +4,13 @@ import (
 	"context"
 	"errors"
 	"mesa-mestre/domain"
-	"net/http"
 
-	"github.com/danielgtaylor/huma/v2"
+	"mesa-mestre/extension/huma"
 )
 
 type CreateOwnerBody struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Name  string `json:"name" example:"Michael Scott"`
+	Email string `json:"email" example:"michael.scott@dundermifflin.com"`
 }
 
 type CreateOwnerRequest struct {
@@ -42,29 +41,8 @@ func (o *OwnerHandler) CreateOwnerHandler(ctx context.Context, req *CreateOwnerR
 	case errors.Is(err, domain.ErrConflict):
 		return nil, huma.Error409Conflict("Owner already exists")
 	case err != nil:
-		return nil, huma.Error500InternalServerError("Internal server error")
+		return nil, huma.Error500InternalServerError()
 	}
 
 	return &CreateOwnerResponse{}, nil
-}
-
-func CreateOwnerOperation() huma.Operation {
-	return huma.Operation{
-		OperationID: "create-owner",
-		Method:      http.MethodPost,
-		Path:        "/owners",
-		Summary:     "Create a new owner",
-		Tags:        []string{"Owners"},
-		Responses: map[string]*huma.Response{
-			"204": {
-				Description: "Owner created successfully",
-			},
-			"409": {
-				Description: "Owner already exists",
-			},
-			"500": {
-				Description: "Internal server error",
-			},
-		},
-	}
 }

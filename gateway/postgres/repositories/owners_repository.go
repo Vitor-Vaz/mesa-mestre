@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"mesa-mestre/domain"
 	"mesa-mestre/gateway/postgres/pggen"
@@ -40,4 +41,24 @@ func (r *OwnersRepository) CreateOwner(ctx context.Context, name string, email s
 	}
 
 	return nil
+}
+
+// FetchOwnerByEmail retrieves an owner from the database by their email.
+func (r *OwnersRepository) FetchOwnerByEmail(ctx context.Context, email string) (domain.Owner, error) {
+	ownerRecord, err := r.q.FetchOwnerByEmail(ctx, email)
+	if errors.Is(err, sql.ErrNoRows) {
+		return domain.Owner{}, domain.ErrNotFound
+	}
+
+	if err != nil {
+		telemetryfs.Error(ctx, "failed to fetch owner by email due to unexpected error")
+		return domain.Owner{}, errors.Join(domain.ErrUnexpected, err)
+	}
+
+	return domain.Owner{
+		ID:        ownerRecord.ID,
+		Name:      ownerRecord.Name,
+		Email:     ownerRecord.Email,
+		CreatedAt: ownerRecord.CreatedAt.Time,
+	}, nil
 }

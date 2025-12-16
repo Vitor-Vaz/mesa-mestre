@@ -14,7 +14,6 @@ type Operation struct {
 	Path        string
 	Summary     string
 	Tags        []string
-	Responses   map[string]*huma.Response
 }
 
 func NewConfig(appName, appVersion string) huma.Config {
@@ -51,7 +50,6 @@ func Register[I any, O any](api huma.API, op Operation, handler func(ctx context
 		Path:        op.Path,
 		Summary:     op.Summary,
 		Tags:        op.Tags,
-		Responses:   op.Responses,
 	}, handler)
 }
 

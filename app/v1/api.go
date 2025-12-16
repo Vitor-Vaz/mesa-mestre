@@ -2,6 +2,7 @@ package v1
 
 import (
 	"context"
+	"net/http"
 
 	"mesa-mestre/extension/chi"
 	"mesa-mestre/extension/huma"
@@ -21,7 +22,13 @@ func RegisterRoutes(provider HandlerProvider) chi.Router {
 
 	api := huma.NewAPI(r.C, config)
 
-	huma.Register(api, CreateOwnerOperation(), provider.CreateOwnerHandler)
+	huma.Register(api, huma.Operation{
+		OperationID: "create-owner",
+		Method:      http.MethodPost,
+		Path:        APIPrefix + "/owners",
+		Summary:     "Create a new owner",
+		Tags:        []string{"Owners"},
+	}, provider.CreateOwnerHandler)
 
 	return r
 }

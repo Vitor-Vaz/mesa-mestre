@@ -39,7 +39,7 @@ func (o *OwnerHandler) CreateOwnerHandler(ctx context.Context, req *CreateOwnerR
 	err := o.ownerCreator.CreateOwner(ctx, req.Body.Name, req.Body.Email)
 	switch {
 	case errors.Is(err, domain.ErrConflict):
-		return nil, huma.Error409Conflict("owner already exists")
+		return nil, huma.Error409Conflict("Owner already exists")
 	case err != nil:
 		return nil, huma.Error500InternalServerError()
 	}

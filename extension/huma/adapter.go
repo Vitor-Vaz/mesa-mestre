@@ -17,7 +17,25 @@ type Operation struct {
 }
 
 func NewConfig(appName, appVersion string) huma.Config {
-	return huma.DefaultConfig(appName, appVersion)
+	cfg := huma.Config{
+		OpenAPI: &huma.OpenAPI{
+			OpenAPI: "3.1.0",
+			Info: &huma.Info{
+				Title:   appName,
+				Version: appVersion,
+			},
+			Components: &huma.Components{
+				Schemas: huma.NewMapRegistry("#/components/schemas/", huma.DefaultSchemaNamer),
+			},
+		},
+		OpenAPIPath:   "/openapi",
+		DocsPath:      "/docs",
+		SchemasPath:   "/schemas",
+		Formats:       huma.DefaultFormats,
+		DefaultFormat: "application/json",
+	}
+
+	return huma.Config(cfg)
 }
 
 func NewAPI(r *chi.Mux, config huma.Config) huma.API {

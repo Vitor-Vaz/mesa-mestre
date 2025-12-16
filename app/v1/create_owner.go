@@ -6,6 +6,8 @@ import (
 	"mesa-mestre/domain"
 	"net/http"
 
+	adapter "mesa-mestre/extension/huma"
+
 	"github.com/danielgtaylor/huma/v2"
 )
 
@@ -48,22 +50,57 @@ func (o *OwnerHandler) CreateOwnerHandler(ctx context.Context, req *CreateOwnerR
 	return &CreateOwnerResponse{}, nil
 }
 
-func CreateOwnerOperation() huma.Operation {
-	return huma.Operation{
+type APIError struct {
+	Title  string `json:"title" doc:"Error title" example:"Conflict"`
+	Status int    `json:"status" doc:"HTTP status code" example:"409"`
+	Detail string `json:"detail" doc:"Error details" example:"Owner already exists"`
+}
+
+func CreateOwnerOperation() adapter.Operation {
+	return adapter.Operation{
 		OperationID: "create-owner",
 		Method:      http.MethodPost,
-		Path:        "/owners",
+		Path:        APIPrefix + "/owners",
 		Summary:     "Create a new owner",
 		Tags:        []string{"Owners"},
+
 		Responses: map[string]*huma.Response{
 			"204": {
 				Description: "Owner created successfully",
 			},
 			"409": {
 				Description: "Owner already exists",
+				Content: map[string]*huma.MediaType{
+					"application/json": {
+						Examples: map[string]*huma.Example{
+							"conflict": {
+								Summary: "Dono já existe",
+								Value: APIError{
+									Title:  "Conflict",
+									Status: 409,
+									Detail: "Owner already exists",
+								},
+							},
+						},
+					},
+				},
 			},
 			"500": {
 				Description: "Internal server error",
+				Content: map[string]*huma.MediaType{
+					"application/json": {
+						Examples: map[string]*huma.Example{
+							"internalServerError": {
+								Summary: "Erro interno do servidor",
+								Value: APIError{
+									Title:  "Internal Server Error",
+									Status: 500,
+									Detail: "Internal server error",
+								},
+							},
+						},
+					},
+				},
 			},
 		},
 	}

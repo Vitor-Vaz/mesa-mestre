@@ -14,9 +14,11 @@ type Operation struct {
 	Path        string
 	Summary     string
 	Tags        []string
+	Responses   map[string]*huma.Response
 }
 
 func NewConfig(appName, appVersion string) huma.Config {
+
 	cfg := huma.Config{
 		OpenAPI: &huma.OpenAPI{
 			OpenAPI: "3.1.0",
@@ -28,8 +30,8 @@ func NewConfig(appName, appVersion string) huma.Config {
 				Schemas: huma.NewMapRegistry("#/components/schemas/", huma.DefaultSchemaNamer),
 			},
 		},
-		OpenAPIPath:   "/openapi",
-		DocsPath:      "/docs",
+		OpenAPIPath:   "/api/v1/openapi",
+		DocsPath:      "/api/v1/docs",
 		SchemasPath:   "/schemas",
 		Formats:       huma.DefaultFormats,
 		DefaultFormat: "application/json",
@@ -49,6 +51,7 @@ func Register[I any, O any](api huma.API, op Operation, handler func(ctx context
 		Path:        op.Path,
 		Summary:     op.Summary,
 		Tags:        op.Tags,
+		Responses:   op.Responses,
 	}, handler)
 }
 

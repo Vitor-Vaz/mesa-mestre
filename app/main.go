@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/caarlos0/env/v10"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -27,6 +28,8 @@ func main() {
 	ctx := telemetryfs.WithLogger(context.Background(), logger)
 
 	telemetryfs.Info(ctx, "Starting application")
+
+	_ = godotenv.Load()
 
 	var config Config
 	if err := env.Parse(&config); err != nil {

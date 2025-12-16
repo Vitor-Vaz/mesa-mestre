@@ -37,7 +37,6 @@ func NewOwnerHandler(ownerCreator OnwerCreator) *OwnerHandler {
 }
 
 func (o *OwnerHandler) CreateOwnerHandler(ctx context.Context, req *CreateOwnerRequest) (*CreateOwnerResponse, error) {
-
 	err := o.ownerCreator.CreateOwner(ctx, req.Body.Name, req.Body.Email)
 	switch {
 	case errors.Is(err, domain.ErrConflict):

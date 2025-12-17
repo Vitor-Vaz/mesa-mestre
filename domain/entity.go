@@ -1,9 +1,14 @@
 package domain
 
-import "github.com/gofrs/uuid"
+import (
+	"time"
+
+	"github.com/gofrs/uuid"
+)
 
 type Owner struct {
-	ID    uuid.UUID
-	Name  string
-	Email string
+	ID        uuid.UUID
+	Name      string
+	Email     string
+	CreatedAt time.Time
 }

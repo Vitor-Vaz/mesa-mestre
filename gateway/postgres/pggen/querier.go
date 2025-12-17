@@ -9,6 +9,7 @@ import (
 )
 
 type Querier interface {
+	FetchOwnerByEmail(ctx context.Context, email string) (Owner, error)
 	InsertOwner(ctx context.Context, arg InsertOwnerParams) error
 }
 

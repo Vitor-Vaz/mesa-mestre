@@ -7,7 +7,7 @@ package pggen
 import (
 	"database/sql"
 
-	"github.com/google/uuid"
+	uuid "github.com/gofrs/uuid"
 )
 
 type Owner struct {

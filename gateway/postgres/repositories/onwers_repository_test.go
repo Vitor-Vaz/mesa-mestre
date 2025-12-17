@@ -20,8 +20,10 @@ func TestCreateOwner(t *testing.T) {
 	name := "Michael Scott"
 	email := "michael.scott@dundlermufflinpapers.com.br"
 
+	ctx := context.Background()
+
 	t.Run("should create owner sucessfully", func(t *testing.T) {
-		err := repo.CreateOwner(context.Background(), name, email)
+		err := repo.CreateOwner(ctx, name, email)
 		assert.NoError(t, err)
 
 		var dbName, dbEmail string
@@ -33,7 +35,7 @@ func TestCreateOwner(t *testing.T) {
 	})
 
 	t.Run("should fail when creating owner with duplicate email", func(t *testing.T) {
-		err := repo.CreateOwner(context.Background(), "Another Name", email)
+		err := repo.CreateOwner(ctx, "Another Name", email)
 
 		assert.ErrorIs(t, domain.ErrConflict, err)
 	})
@@ -41,7 +43,45 @@ func TestCreateOwner(t *testing.T) {
 	t.Run("should fail when return an unexpected error", func(t *testing.T) {
 		_, _ = db.Exec(`DROP TABLE IF EXISTS owners CASCADE;`)
 
-		err := repo.CreateOwner(context.Background(), "Name", email)
+		err := repo.CreateOwner(ctx, "Name", email)
+
+		assert.ErrorIs(t, err, domain.ErrUnexpected)
+	})
+
+}
+
+func TestFetchOWnerByEmail(t *testing.T) {
+
+	db := testhelpers.SetupTestDB(t)
+	repo := repositories.NewOwnersRepository(db)
+
+	name := "Pam Beesly"
+	email := "pam.beesly@dundlermufflinpapers.com.br"
+
+	ctx := context.Background()
+
+	t.Run("should fetch owner by email successfully", func(t *testing.T) {
+		err := repo.CreateOwner(ctx, name, email)
+		assert.NoError(t, err)
+
+		owner, err := repo.FetchOwnerByEmail(ctx, email)
+		assert.NoError(t, err)
+
+		assert.Equal(t, name, owner.Name)
+		assert.Equal(t, email, owner.Email)
+
+	})
+
+	t.Run("should return not found error when owner does not exist", func(t *testing.T) {
+		_, err := repo.FetchOwnerByEmail(ctx, "any.email@gmail.com")
+
+		assert.ErrorIs(t, err, domain.ErrNotFound)
+	})
+
+	t.Run("should return unexpected error when db fails", func(t *testing.T) {
+		_, _ = db.Exec(`DROP TABLE IF EXISTS owners CASCADE;`)
+
+		_, err := repo.FetchOwnerByEmail(ctx, email)
 
 		assert.ErrorIs(t, err, domain.ErrUnexpected)
 	})

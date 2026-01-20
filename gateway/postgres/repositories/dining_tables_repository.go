@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"mesa-mestre/domain"
 	"mesa-mestre/extension/telemetryfs"
@@ -22,12 +21,11 @@ func NewDiningTablesRepository(db pggen.DBTX) *DiningTablesRepository {
 }
 
 // CreateDiningTable inserts a new dining table into the database. tableNumber and capacity are required fields.
-func (r *DiningTablesRepository) CreateDiningTable(ctx context.Context, tableNumber, capacity int) error {
-
+func (r *DiningTablesRepository) CreateDiningTable(ctx context.Context, tableNumber, capacity int32) error {
 	err := r.q.InsertDiningTable(ctx, pggen.InsertDiningTableParams{
-		TableNumber: int32(tableNumber),
-		Capacity:    int32(capacity),
-		TableStatus: sql.NullString{String: string(domain.DiningTableStatusAvailable), Valid: true},
+		TableNumber: tableNumber,
+		Capacity:    capacity,
+		TableStatus: domain.DiningTableStatusAvailable.String(),
 	})
 
 	var pgErr *pq.Error

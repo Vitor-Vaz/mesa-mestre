@@ -4,9 +4,13 @@ import "github.com/gofrs/uuid"
 
 type DiningTableStatus string
 
+func (d DiningTableStatus) String() string {
+	return string(d)
+}
+
 const (
 	DiningTableStatusAvailable DiningTableStatus = "available"
-	DiningTableStatusOccupied  DiningTableStatus = "active"
+	DiningTableStatusActive    DiningTableStatus = "active"
 )
 
 type DiningTable struct {

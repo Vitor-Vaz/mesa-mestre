@@ -7,7 +7,6 @@ package pggen
 
 import (
 	"context"
-	"database/sql"
 )
 
 const insertDiningTable = `-- name: InsertDiningTable :exec
@@ -16,9 +15,9 @@ VALUES ($1, $2, $3)
 `
 
 type InsertDiningTableParams struct {
-	TableNumber int32          `json:"table_number"`
-	Capacity    int32          `json:"capacity"`
-	TableStatus sql.NullString `json:"table_status"`
+	TableNumber int32  `json:"table_number"`
+	Capacity    int32  `json:"capacity"`
+	TableStatus string `json:"table_status"`
 }
 
 func (q *Queries) InsertDiningTable(ctx context.Context, arg InsertDiningTableParams) error {

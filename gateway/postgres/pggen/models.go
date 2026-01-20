@@ -12,12 +12,12 @@ import (
 )
 
 type DiningTable struct {
-	ID          uuid.UUID      `json:"id"`
-	TableNumber int32          `json:"table_number"`
-	Capacity    int32          `json:"capacity"`
-	TableStatus sql.NullString `json:"table_status"`
-	CreatedAt   time.Time      `json:"created_at"`
-	UpdatedAt   time.Time      `json:"updated_at"`
+	ID          uuid.UUID `json:"id"`
+	TableNumber int32     `json:"table_number"`
+	Capacity    int32     `json:"capacity"`
+	TableStatus string    `json:"table_status"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type Order struct {

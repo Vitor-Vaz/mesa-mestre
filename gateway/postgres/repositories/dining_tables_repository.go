@@ -34,7 +34,7 @@ func (r *DiningTablesRepository) CreateDiningTable(ctx context.Context, tableNum
 	}
 
 	if err != nil {
-		telemetryfs.Error(ctx, "failed to create owner due to unexpected error")
+		telemetryfs.Error(ctx, "failed to create dining table due to unexpected error")
 		return errors.Join(domain.ErrUnexpected, err)
 	}
 

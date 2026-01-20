@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"mesa-mestre/domain"
 	"mesa-mestre/extension/telemetryfs"
@@ -26,7 +27,7 @@ func (r *DiningTablesRepository) CreateDiningTable(ctx context.Context, tableNum
 	err := r.q.InsertDiningTable(ctx, pggen.InsertDiningTableParams{
 		TableNumber: int32(tableNumber),
 		Capacity:    int32(capacity),
-		TableStatus: string(domain.DiningTableStatusAvailable),
+		TableStatus: sql.NullString{String: string(domain.DiningTableStatusAvailable), Valid: true},
 	})
 
 	var pgErr *pq.Error

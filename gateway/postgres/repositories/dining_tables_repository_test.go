@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCreateDinningTables(t *testing.T) {
+func TestCreateDiningTables(t *testing.T) {
 
 	db := testhelpers.SetupTestDB(t)
 	repo := repositories.NewDiningTablesRepository(db)

@@ -20,6 +20,6 @@ type InsertOwnerParams struct {
 }
 
 func (q *Queries) InsertOwner(ctx context.Context, arg InsertOwnerParams) error {
-	_, err := q.db.ExecContext(ctx, insertOwner, arg.Name, arg.Email)
+	_, err := q.exec(ctx, q.insertOwnerStmt, insertOwner, arg.Name, arg.Email)
 	return err
 }

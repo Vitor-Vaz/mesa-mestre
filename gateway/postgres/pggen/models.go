@@ -6,13 +6,40 @@ package pggen
 
 import (
 	"database/sql"
+	"time"
 
-	"github.com/google/uuid"
+	uuid "github.com/gofrs/uuid"
 )
+
+type DiningTable struct {
+	ID          uuid.UUID `json:"id"`
+	TableNumber int32     `json:"table_number"`
+	Capacity    int32     `json:"capacity"`
+	TableStatus string    `json:"table_status"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+type Order struct {
+	ID             uuid.UUID     `json:"id"`
+	OrderStatus    string        `json:"order_status"`
+	PlateID        uuid.NullUUID `json:"plate_id"`
+	DinningTableID uuid.NullUUID `json:"dinning_table_id"`
+	TotalPrice     float64       `json:"total_price"`
+	CreatedAt      sql.NullTime  `json:"created_at"`
+}
 
 type Owner struct {
 	ID        uuid.UUID    `json:"id"`
 	Name      string       `json:"name"`
 	Email     string       `json:"email"`
 	CreatedAt sql.NullTime `json:"created_at"`
+}
+
+type Plate struct {
+	ID               uuid.UUID      `json:"id"`
+	Price            float64        `json:"price"`
+	PlateName        string         `json:"plate_name"`
+	PlateDescription sql.NullString `json:"plate_description"`
+	CreatedAt        sql.NullTime   `json:"created_at"`
 }

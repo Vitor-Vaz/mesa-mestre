@@ -45,13 +45,16 @@ func main() {
 
 	// setup repositories
 	ownerRepo := repositories.NewOwnersRepository(db)
+	diningTableRepo := repositories.NewDiningTablesRepository(db)
 
 	// setup domain handlers
 	createUserHandler := v1.NewOwnerHandler(ownerRepo)
+	createDiningTableHandler := v1.NewDiningTableHandler(diningTableRepo)
 
 	// setup useCases
 	HandlerProvider := v1.HandlerProvider{
 		CreateOwnerHandler: createUserHandler.CreateOwnerHandler,
+		CreateDiningTable:  createDiningTableHandler.CreateDiningTableHandler,
 	}
 
 	// Register routes

@@ -30,6 +30,9 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.insertOwnerStmt, err = db.PrepareContext(ctx, insertOwner); err != nil {
 		return nil, fmt.Errorf("error preparing query InsertOwner: %w", err)
 	}
+	if q.insertPlateStmt, err = db.PrepareContext(ctx, insertPlate); err != nil {
+		return nil, fmt.Errorf("error preparing query InsertPlate: %w", err)
+	}
 	return &q, nil
 }
 
@@ -43,6 +46,11 @@ func (q *Queries) Close() error {
 	if q.insertOwnerStmt != nil {
 		if cerr := q.insertOwnerStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing insertOwnerStmt: %w", cerr)
+		}
+	}
+	if q.insertPlateStmt != nil {
+		if cerr := q.insertPlateStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing insertPlateStmt: %w", cerr)
 		}
 	}
 	return err
@@ -86,6 +94,7 @@ type Queries struct {
 	tx                    *sql.Tx
 	insertDiningTableStmt *sql.Stmt
 	insertOwnerStmt       *sql.Stmt
+	insertPlateStmt       *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
@@ -94,5 +103,6 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		tx:                    tx,
 		insertDiningTableStmt: q.insertDiningTableStmt,
 		insertOwnerStmt:       q.insertOwnerStmt,
+		insertPlateStmt:       q.insertPlateStmt,
 	}
 }

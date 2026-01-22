@@ -37,9 +37,9 @@ type Owner struct {
 }
 
 type Plate struct {
-	ID               uuid.UUID      `json:"id"`
-	Price            float64        `json:"price"`
-	PlateName        string         `json:"plate_name"`
-	PlateDescription sql.NullString `json:"plate_description"`
-	CreatedAt        sql.NullTime   `json:"created_at"`
+	ID               uuid.UUID    `json:"id"`
+	Price            float64      `json:"price"`
+	PlateName        string       `json:"plate_name"`
+	PlateDescription string       `json:"plate_description"`
+	CreatedAt        sql.NullTime `json:"created_at"`
 }

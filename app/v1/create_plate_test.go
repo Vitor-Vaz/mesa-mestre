@@ -58,7 +58,6 @@ func TestCreatePlateHandler(t *testing.T) {
 
 			resp, err := http.Post(server.URL+"/api/v1/plates", "application/json", bytes.NewReader(bodyBytes))
 			assert.NoError(t, err)
-			defer resp.Body.Close()
 
 			assert.Equal(t, tt.expectedStatus, resp.StatusCode)
 

@@ -11,6 +11,7 @@ import (
 type Querier interface {
 	InsertDiningTable(ctx context.Context, arg InsertDiningTableParams) error
 	InsertOwner(ctx context.Context, arg InsertOwnerParams) error
+	InsertPlate(ctx context.Context, arg InsertPlateParams) error
 }
 
 var _ Querier = (*Queries)(nil)

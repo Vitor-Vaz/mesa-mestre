@@ -11,8 +11,9 @@ import (
 const APIPrefix = "/api/v1"
 
 type HandlerProvider struct {
-	CreateOwnerHandler func(ctx context.Context, req *CreateOwnerRequest) (*CreateOwnerResponse, error)
-	CreateDiningTable  func(ctx context.Context, req *CreateDiningTableRequest) (*CreateDiningTableResponse, error)
+	CreateOwnerHandler       func(ctx context.Context, req *CreateOwnerRequest) (*CreateOwnerResponse, error)
+	CreateDiningTableHandler func(ctx context.Context, req *CreateDiningTableRequest) (*CreateDiningTableResponse, error)
+	CreatePlateHandler       func(ctx context.Context, req *CreatePlateRequest) (*CreatePlateResponse, error)
 }
 
 func RegisterRoutes(provider HandlerProvider) chi.Router {
@@ -37,7 +38,15 @@ func RegisterRoutes(provider HandlerProvider) chi.Router {
 		Path:        APIPrefix + "/dining-table",
 		Summary:     "Create a new dining table",
 		Tags:        []string{"Dining Tables"},
-	}, provider.CreateDiningTable)
+	}, provider.CreateDiningTableHandler)
+
+	huma.Register(api, huma.Operation{
+		OperationID: "create-plate",
+		Method:      http.MethodPost,
+		Path:        APIPrefix + "/plate",
+		Summary:     "Create a new plate",
+		Tags:        []string{"Plates"},
+	}, provider.CreatePlateHandler)
 
 	return r
 }

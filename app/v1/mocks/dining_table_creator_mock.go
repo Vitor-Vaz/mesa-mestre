@@ -5,7 +5,7 @@ package mocks
 
 import (
 	"context"
-	v1 "mesa-mestre/app/v1"
+	"mesa-mestre/app/v1"
 	"sync"
 )
 
